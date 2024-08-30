@@ -1,5 +1,6 @@
 package com.example.weldingShop.service;
 
+import com.example.weldingShop.dto.WeldingDTO;
 import com.example.weldingShop.entity.Welding;
 import com.example.weldingShop.repository.WeldingRepository;
 import org.apache.logging.log4j.message.Message;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class WeldingService {
@@ -30,11 +32,27 @@ public class WeldingService {
         return weldingRepository.findWeldsByName(name);
     }
 
+    public List<WeldingDTO> findWeldsByNameUS(String name){
+        List<Welding> list = weldingRepository.findWeldsByName(name);
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Нет сварочных аппаратов, в названии которых есть: " + name);
+        }
+        return list.stream()
+                .map(welding -> new WeldingDTO(
+                welding.getName(),
+                welding.getPrice(),
+                welding.getMaxPower(),
+                welding.getType()
+            )).collect(Collectors.toList());
+
+    }
+
     public Welding editWeld(UUID id, Welding weld) {
         Welding editWeld = weldingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Welding с таким ID не найден!"));
         editWeld.setName(weld.getName());
         editWeld.setPrice(weld.getPrice());
         editWeld.setMaxPower(weld.getMaxPower());
+        editWeld.setType(weld.getType());
         return weldingRepository.save(editWeld);
     }
 

@@ -1,5 +1,6 @@
 package com.example.weldingShop.controller;
 
+import com.example.weldingShop.dto.WeldingDTO;
 import com.example.weldingShop.entity.Welding;
 import com.example.weldingShop.service.WeldingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class WeldingController {
     @GetMapping(path = "/findlike")
     public List<Welding> findWeldsByName(@RequestParam String name){
         return weldingService.findWeldsByName(name);
+    }
+
+    @GetMapping(path = "/findlikeUS")
+    public List<WeldingDTO> findWeldsByNameUS(@RequestParam String name){
+        return weldingService.findWeldsByNameUS(name);
     }
 
     @GetMapping(path = "/{sort}")

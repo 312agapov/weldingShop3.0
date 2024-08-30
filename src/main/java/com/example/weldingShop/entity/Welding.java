@@ -15,7 +15,10 @@ public class Welding {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private int price;
+    private double price;
     private int maxPower;
+
+    @Enumerated(EnumType.STRING)
+    private WeldType type;
 
 }
