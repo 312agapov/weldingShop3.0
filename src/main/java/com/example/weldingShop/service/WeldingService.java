@@ -5,13 +5,14 @@ import com.example.weldingShop.entity.Welding;
 import com.example.weldingShop.repository.WeldingRepository;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,16 @@ public class WeldingService {
             throw new IllegalArgumentException("Нет сварочных аппаратов, в названии которых есть: " + name);
         }
         return weldingRepository.findWeldsByName(name);
+    }
+
+    public List<Welding> findWeldsLimited(int page){
+        final int limit = 2;
+        Pageable pageable = PageRequest.of(page-1, limit);
+        List<Welding> list = weldingRepository.findWeldsLimited(pageable);
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Нет сварочных аппаратов");
+        }
+        return weldingRepository.findWeldsLimited(pageable);
     }
 
     public List<WeldingDTO> findWeldsByNameUS(String name){

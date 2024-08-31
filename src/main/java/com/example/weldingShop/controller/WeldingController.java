@@ -26,17 +26,22 @@ public class WeldingController {
         return weldingService.editWeld(id, weld);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = "/{id}")
     public Welding addWeld(@PathVariable ("id") UUID id) {
         return weldingService.deleteWeld(id);
     }
 
-    @GetMapping(path = "/findlike")
+    @GetMapping(path = "/RU")
     public List<Welding> findWeldsByName(@RequestParam String name){
         return weldingService.findWeldsByName(name);
     }
 
-    @GetMapping(path = "/findlikeUS")
+    @GetMapping(path = "/pages/{page}")
+    public List<Welding> findWeldsByNameLim10(@PathVariable ("page") int page){
+        return weldingService.findWeldsLimited(page);
+    }
+
+    @GetMapping(path = "/US")
     public List<WeldingDTO> findWeldsByNameUS(@RequestParam String name){
         return weldingService.findWeldsByNameUS(name);
     }

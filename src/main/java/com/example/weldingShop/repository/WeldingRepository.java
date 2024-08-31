@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 @Repository
@@ -13,5 +14,9 @@ public interface WeldingRepository extends JpaRepository <Welding, UUID> {
 
     @Query("SELECT s FROM Welding s WHERE s.name LIKE %:name%")
     List<Welding> findWeldsByName(@Param("name") String name);
+
+    @Query("SELECT s FROM Welding s")
+    List<Welding> findWeldsLimited(Pageable pageable);
+
 
 }
